@@ -29,19 +29,18 @@ export default function LoginPage() {
       const snap = await getDoc(doc(db, "users", user.uid));
 
       if (!snap.exists()) {
-        setError("Username not found in database.");
+        setError("Username not found.");
         return;
       }
 
       const savedUsername = snap.data().username;
 
-      // Check if username matches
       if (savedUsername !== username) {
         setError("Incorrect username.");
         return;
       }
 
-      router.push("/dashboard");
+      router.push("/dashboard"); // redirect works
     } catch (err: any) {
       setError(err.message);
     }
@@ -68,11 +67,11 @@ export default function LoginPage() {
           backdropFilter: "blur(6px)"
         }}
       >
-        <h2 style={{ textAlign: "center", color: "black", marginBottom: 20 }}>
+        <h2 style={{ textAlign: "center", color: "#222", marginBottom: 20 }}>
           Login
         </h2>
 
-        <label style={{ color: "black", fontSize: 18 }}>Username</label>
+        <label style={{ color: "#222", fontSize: 18 }}>Username</label>
         <input
           type="text"
           required
@@ -87,7 +86,7 @@ export default function LoginPage() {
           }}
         />
 
-        <label style={{ color: "black", fontSize: 18 }}>Email</label>
+        <label style={{ color: "#222", fontSize: 18 }}>Email</label>
         <input
           type="email"
           required
@@ -102,7 +101,7 @@ export default function LoginPage() {
           }}
         />
 
-        <label style={{ color: "black", fontSize: 18 }}>Password</label>
+        <label style={{ color: "#222", fontSize: 18 }}>Password</label>
         <input
           type="password"
           required
