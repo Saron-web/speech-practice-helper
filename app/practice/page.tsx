@@ -275,47 +275,75 @@ export default function PracticePage() {
         </div>
       </div>
 
-      {/* Microphone Button */}
-      <button
-        onClick={startListening}
+      {/* BUTTON ROW: SKIP - MIC - BACK */}
+      <div
         style={{
-          width: 200,
-          height: 200,
-          borderRadius: "50%",
-          background: listening ? "#FFD966" : "#FF9CEE",
-          color: "white",
-          fontSize: 70,
-          border: "none",
-          cursor: "pointer",
-          boxShadow: "0 10px 20px rgba(0,0,0,0.25)",
-          transition: "transform 0.15s, background 0.3s",
-          transform: listening ? "scale(1.05)" : "scale(1)"
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: 350,
+          marginTop: 10
         }}
       >
-        🎤
-      </button>
+        {/* LEFT: SKIP */}
+        <button
+          onClick={() => setIndex((prev) => prev + 1)}
+          style={{
+            padding: "12px 20px",
+            borderRadius: 20,
+            background: "#FF6F91",
+            color: "white",
+            fontSize: 20,
+            border: "none",
+            cursor: "pointer",
+            boxShadow: "0 6px 12px rgba(0,0,0,0.25)"
+          }}
+        >
+          Skip
+        </button>
 
-      <div style={{ fontSize: 24, color: "white" }}>
-        {listening ? "Listening..." : "Tap the button to speak!"}
+        {/* CENTER: MICROPHONE */}
+        <button
+          onClick={startListening}
+          style={{
+            width: 200,
+            height: 200,
+            borderRadius: "50%",
+            background: listening ? "#FFD966" : "#FF9CEE",
+            color: "white",
+            fontSize: 70,
+            border: "none",
+            cursor: "pointer",
+            boxShadow: "0 10px 20px rgba(0,0,0,0.25)",
+            transition: "transform 0.15s, background 0.3s",
+            transform: listening ? "scale(1.05)" : "scale(1)"
+          }}
+        >
+          🎤
+        </button>
+
+        {/* RIGHT: BACK TO PREVIOUS WORD */}
+        <button
+          onClick={() => setIndex((prev) => Math.max(prev - 1, 0))}
+          style={{
+            padding: "12px 20px",
+            borderRadius: 20,
+            background: "#6A5ACD",
+            color: "white",
+            fontSize: 20,
+            border: "none",
+            cursor: "pointer",
+            boxShadow: "0 6px 12px rgba(0,0,0,0.25)"
+          }}
+        >
+          Back
+        </button>
       </div>
 
-      {/* ⭐ SKIP BUTTON ADDED HERE ⭐ */}
-      <button
-        onClick={() => setIndex((prev) => prev + 1)}
-        style={{
-          marginTop: 10,
-          padding: "12px 20px",
-          borderRadius: 20,
-          background: "#FF6F91",
-          color: "white",
-          fontSize: 20,
-          border: "none",
-          cursor: "pointer",
-          boxShadow: "0 6px 12px rgba(0,0,0,0.25)"
-        }}
-      >
-        Skip — Too Hard
-      </button>
+      <div style={{ fontSize: 24, color: "white", marginTop: 20 }}>
+        {listening ? "Listening..." : "Tap the button to speak!"}
+      </div>
 
       {heard && (
         <div
@@ -330,18 +358,6 @@ export default function PracticePage() {
           I heard: <b>{heard}</b>
         </div>
       )}
-
-      <a
-        href="/dashboard"
-        style={{
-          marginTop: 10,
-          fontSize: 22,
-          color: "white",
-          textDecoration: "underline"
-        }}
-      >
-        Back to Dashboard
-      </a>
 
       {/* 🧸 Teddy Bear Helper */}
       <div
