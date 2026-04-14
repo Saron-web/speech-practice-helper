@@ -53,7 +53,7 @@ export default function LoginPage() {
           textShadow: "3px 3px 6px rgba(0,0,0,0.25)"
         }}
       >
-        Welcome Back 👋
+        Welcome👋
       </h1>
 
       <form
