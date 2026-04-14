@@ -2,15 +2,36 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../context/AuthContext";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { login } = useAuth();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const validateEmail = (email: string) => {
+    return /\S+@\S+\.\S+/.test(email); // realistic email format
+  };
 
   const handleLogin = (e: any) => {
     e.preventDefault();
-    router.push("/dashboard"); // ANY email + password works
+
+    if (!validateEmail(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters.");
+      return;
+    }
+
+    setError("");
+    login(email); // fake login
+    router.push("/dashboard");
   };
 
   return (
@@ -32,7 +53,7 @@ export default function LoginPage() {
           textShadow: "3px 3px 6px rgba(0,0,0,0.25)"
         }}
       >
-        Welcome to Speech Practice Helper 👋
+        Welcome Back 👋
       </h1>
 
       <form
@@ -50,9 +71,24 @@ export default function LoginPage() {
           gap: 20
         }}
       >
+        {error && (
+          <div
+            style={{
+              background: "rgba(255,0,0,0.3)",
+              padding: 12,
+              borderRadius: 12,
+              color: "white",
+              fontSize: 18,
+              textAlign: "center"
+            }}
+          >
+            {error}
+          </div>
+        )}
+
         <input
           type="email"
-          placeholder="Email (anything works)"
+          placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           style={{
@@ -65,7 +101,7 @@ export default function LoginPage() {
 
         <input
           type="password"
-          placeholder="Password (anything works)"
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           style={{

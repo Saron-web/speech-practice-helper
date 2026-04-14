@@ -1,17 +1,54 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { db } from "../firebase/firebaseConfig";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 export default function PracticePage() {
   const [index, setIndex] = useState(0);
+  const [listening, setListening] = useState(false);
+  const [heard, setHeard] = useState("");
+  const recognitionRef = useRef<any>(null);
 
-  const words = ["Apple", "Ball", "Cat", "Dog", "Fish", "Sun", "Tree"];
+  const words = ["Apple", "Ball", "Cat","Boy","Girl", "Mama","Dada", "Sorry", "Stop", "Dog", "Yes", "Fish", "Sun", "Tree"];
 
-  const saveAndNext = async () => {
+  const startListening = () => {
+    const SpeechRecognition =
+      (window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert("Speech recognition is not supported on this browser.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognitionRef.current = recognition;
+    setListening(true);
+
+    recognition.start();
+
+    recognition.onresult = (event: any) => {
+      const spoken = event.results[0][0].transcript;
+      setHeard(spoken);
+
+      saveSession(spoken);
+    };
+
+    recognition.onend = () => {
+      setListening(false);
+    };
+  };
+
+  const saveSession = async (spokenWord: string) => {
     await addDoc(collection(db, "practiceSessions"), {
       word: words[index],
+      spoken: spokenWord,
+      correct: spokenWord.toLowerCase() === words[index].toLowerCase(),
       createdAt: serverTimestamp()
     });
 
@@ -56,11 +93,12 @@ export default function PracticePage() {
       </div>
 
       <button
+        onClick={startListening}
         style={{
           width: 220,
           height: 220,
           borderRadius: "50%",
-          background: "#FF6F61",
+          background: listening ? "#FF3B30" : "#FF6F61",
           color: "white",
           fontSize: 80,
           border: "none",
@@ -74,24 +112,19 @@ export default function PracticePage() {
         🎤
       </button>
 
-      <button
-        onClick={saveAndNext}
-        style={{
-          padding: "20px 50px",
-          fontSize: 28,
-          background: "#6A5ACD",
-          color: "white",
-          borderRadius: 30,
-          border: "none",
-          cursor: "pointer",
-          boxShadow: "0 6px 12px rgba(0,0,0,0.25)",
-          transition: "transform 0.15s"
-        }}
-        onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.95)")}
-        onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
-      >
-        Next Word ➜
-      </button>
+      {heard && (
+        <div
+          style={{
+            fontSize: 26,
+            color: "white",
+            background: "rgba(0,0,0,0.3)",
+            padding: 15,
+            borderRadius: 20
+          }}
+        >
+          You said: <b>{heard}</b>
+        </div>
+      )}
 
       <a
         href="/dashboard"
