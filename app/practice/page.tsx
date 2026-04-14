@@ -162,7 +162,7 @@ export default function PracticePage() {
     setHeard("");
 
     // 🧸 Bear reacts to listening
-    setBearExpression("😮🧸");
+    setBearExpression("🧸");
     sounds.start?.play();
 
     recognition.start();
