@@ -77,6 +77,28 @@ export default function Dashboard() {
         >
           ⭐ View History
         </a>
+
+        {/* 📈 NEW PROGRESS BUTTON */}
+        <a
+          href="/progress"
+          style={{
+            background: "rgba(255,255,255,0.35)",
+            padding: 25,
+            borderRadius: 35,
+            textAlign: "center",
+            fontSize: 28,
+            color: "white",
+            fontWeight: "bold",
+            textDecoration: "none",
+            boxShadow: "0 8px 16px rgba(0,0,0,0.25)",
+            backdropFilter: "blur(6px)",
+            transition: "transform 0.15s"
+          }}
+          onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.95)")}
+          onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
+        >
+          📈 Progress
+        </a>
       </div>
 
       <button
