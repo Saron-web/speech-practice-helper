@@ -1,21 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  const { user, login } = useAuth();
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  if (user) {
-    redirect("/dashboard");
-  }
-
-  const handleLogin = async (e: any) => {
+  const handleLogin = (e: any) => {
     e.preventDefault();
-    await login(email, password);
+    router.push("/dashboard"); // ANY email + password works
   };
 
   return (
@@ -37,7 +32,7 @@ export default function LoginPage() {
           textShadow: "3px 3px 6px rgba(0,0,0,0.25)"
         }}
       >
-        Welcome Back 👋
+        Welcome to Speech Practice Helper 👋
       </h1>
 
       <form
@@ -57,7 +52,7 @@ export default function LoginPage() {
       >
         <input
           type="email"
-          placeholder="Email"
+          placeholder="Email (anything works)"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           style={{
@@ -70,7 +65,7 @@ export default function LoginPage() {
 
         <input
           type="password"
-          placeholder="Password"
+          placeholder="Password (anything works)"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           style={{

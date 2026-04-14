@@ -12,7 +12,7 @@ export default function Home() {
 
   return (
     <div style={{ padding: 40 }}>
-      <h1>Welcome</h1>
+      <h1>Welcome to Speech Practice Helper</h1>
       <p>{user.email}</p>
       <button
         onClick={logout}

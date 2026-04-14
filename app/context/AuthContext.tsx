@@ -1,32 +1,23 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
-import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
-import { auth, googleProvider } from "../firebase/firebaseConfig";
+import { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext<any>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<any>(null);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  const loginWithGoogle = async () => {
-    await signInWithPopup(auth, googleProvider);
+  const login = (email: string) => {
+    // Create a fake user so the app thinks someone is logged in
+    setUser({ email });
   };
 
-  const logout = async () => {
-    await signOut(auth);
+  const logout = () => {
+    setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, loginWithGoogle, logout }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

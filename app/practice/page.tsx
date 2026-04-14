@@ -1,24 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
-import { redirect } from "next/navigation";
 import { db } from "../firebase/firebaseConfig";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 export default function PracticePage() {
-  const { user } = useAuth();
   const [index, setIndex] = useState(0);
-
-  if (!user) {
-    redirect("/login");
-  }
 
   const words = ["Apple", "Ball", "Cat", "Dog", "Fish", "Sun", "Tree"];
 
   const saveAndNext = async () => {
     await addDoc(collection(db, "practiceSessions"), {
-      userId: user.uid,
       word: words[index],
       createdAt: serverTimestamp()
     });
@@ -48,7 +40,6 @@ export default function PracticePage() {
         Practice Word
       </h1>
 
-      {/* Big Bubbly Word Card */}
       <div
         style={{
           fontSize: 60,
@@ -64,7 +55,6 @@ export default function PracticePage() {
         {words[index]}
       </div>
 
-      {/* Giant Circle Mic Button */}
       <button
         style={{
           width: 220,
@@ -84,7 +74,6 @@ export default function PracticePage() {
         🎤
       </button>
 
-      {/* Next Word Button */}
       <button
         onClick={saveAndNext}
         style={{

@@ -1,23 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useAuth } from "../context/AuthContext";
-import { redirect } from "next/navigation";
 import { db } from "../firebase/firebaseConfig";
-import { collection, query, where, orderBy, onSnapshot } from "firebase/firestore";
+import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 
 export default function HistoryPage() {
-  const { user } = useAuth();
   const [sessions, setSessions] = useState<any[]>([]);
-
-  if (!user) {
-    redirect("/login");
-  }
 
   useEffect(() => {
     const q = query(
       collection(db, "practiceSessions"),
-      where("userId", "==", user.uid),
       orderBy("createdAt", "desc")
     );
 
@@ -30,7 +22,7 @@ export default function HistoryPage() {
     });
 
     return () => unsubscribe();
-  }, [user.uid]);
+  }, []);
 
   const formatDate = (timestamp: any) => {
     if (!timestamp) return "";

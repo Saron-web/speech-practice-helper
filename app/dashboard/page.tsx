@@ -1,14 +1,9 @@
 "use client";
 
 import { useAuth } from "../context/AuthContext";
-import { redirect } from "next/navigation";
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
-
-  if (!user) {
-    redirect("/login");
-  }
 
   return (
     <div
@@ -29,7 +24,7 @@ export default function Dashboard() {
           textShadow: "3px 3px 6px rgba(0,0,0,0.25)"
         }}
       >
-        Welcome, {user.email}
+        Welcome, {user?.email || "Guest"}
       </h1>
 
       <div
