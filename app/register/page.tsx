@@ -1,68 +1,134 @@
 "use client";
 
-export default function SplashPage() {
+import { useState } from "react";
+import { createUserWithEmailAndPassword, updateProfile, getAuth } from "firebase/auth";
+import { db } from "../firebase/firebaseConfig";
+import { doc, setDoc } from "firebase/firestore";
+import { useRouter } from "next/navigation";
+import React from "react";
+
+export default function RegisterPage() {
+  const router = useRouter();
+  const auth = getAuth();
+
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      await updateProfile(user, { displayName: username });
+
+      await setDoc(doc(db, "users", user.uid), {
+        username: username,
+        email: email,
+        createdAt: new Date()
+      });
+
+      router.push("/dashboard");
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
+
   return (
     <div
       style={{
         minHeight: "100vh",
-        padding: 40,
         display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
         justifyContent: "center",
-        gap: 40,
-        background: "linear-gradient(135deg, #FFB6C1, #FFD700, #87CEFA)"
+        alignItems: "center",
+        background: "linear-gradient(135deg, #b6e63c, #FFD700, #87CEFA)"
       }}
     >
-      <div
+      <form
+        onSubmit={handleRegister}
         style={{
-          fontSize: 90,
-          textShadow: "3px 3px 6px rgba(0,0,0,0.25)"
-        }}
-      >
-        🌈
-      </div>
-
-      <h1
-        style={{
-          fontSize: 48,
-          color: "white",
-          textAlign: "center",
-          textShadow: "3px 3px 6px rgba(0,0,0,0.25)"
-        }}
-      >
-        Speech Practice Helper
-      </h1>
-
-      <p
-        style={{
-          fontSize: 24,
-          color: "white",
-          opacity: 0.9,
-          textAlign: "center",
-          maxWidth: 300
-        }}
-      >
-        A fun way for kids to practice words every day!
-      </p>
-
-      <a
-        href="/login"
-        style={{
-          padding: "20px 50px",
-          fontSize: 28,
-          background: "#6A5ACD",
-          color: "white",
-          borderRadius: 40,
-          textDecoration: "none",
+          background: "rgba(255,255,255,0.4)",
+          padding: 40,
+          borderRadius: 20,
+          width: 350,
           boxShadow: "0 8px 16px rgba(0,0,0,0.25)",
-          transition: "transform 0.15s"
+          backdropFilter: "blur(6px)"
         }}
-        onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.95)")}
-        onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
       >
-        Start ➜
-      </a>
+        <h2 style={{ textAlign: "center", color: "white", marginBottom: 20 }}>
+          Create Account
+        </h2>
+
+        <label style={{ color: "white", fontSize: 18 }}>Username</label>
+        <input
+          type="text"
+          required
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          style={{
+            width: "100%",
+            padding: 12,
+            borderRadius: 10,
+            border: "none",
+            marginBottom: 15
+          }}
+        />
+
+        <label style={{ color: "white", fontSize: 18 }}>Email</label>
+        <input
+          type="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          style={{
+            width: "100%",
+            padding: 12,
+            borderRadius: 10,
+            border: "none",
+            marginBottom: 15
+          }}
+        />
+
+        <label style={{ color: "white", fontSize: 18 }}>Password</label>
+        <input
+          type="password"
+          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          style={{
+            width: "100%",
+            padding: 12,
+            borderRadius: 10,
+            border: "none",
+            marginBottom: 20
+          }}
+        />
+
+        {error && (
+          <p style={{ color: "red", marginBottom: 10, fontSize: 14 }}>{error}</p>
+        )}
+
+        <button
+          type="submit"
+          style={{
+            width: "100%",
+            padding: 14,
+            borderRadius: 10,
+            background: "#6A5ACD",
+            color: "white",
+            fontSize: 20,
+            border: "none",
+            cursor: "pointer",
+            boxShadow: "0 6px 12px rgba(0,0,0,0.25)"
+          }}
+        >
+          Register
+        </button>
+      </form>
     </div>
   );
 }

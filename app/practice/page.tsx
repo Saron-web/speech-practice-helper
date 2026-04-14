@@ -275,24 +275,24 @@ export default function PracticePage() {
         </div>
       </div>
 
-      {/* BUTTON ROW: SKIP - MIC - BACK */}
+      {/* BUTTON ROW: BACK — MIC — SKIP */}
       <div
         style={{
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
-          width: 350,
+          width: 420,   // wider spacing
           marginTop: 10
         }}
       >
-        {/* LEFT: SKIP */}
+        {/* LEFT: BACK */}
         <button
-          onClick={() => setIndex((prev) => prev + 1)}
+          onClick={() => setIndex((prev) => Math.max(prev - 1, 0))}
           style={{
             padding: "12px 20px",
             borderRadius: 20,
-            background: "#FF6F91",
+            background: "#6A5ACD",
             color: "white",
             fontSize: 20,
             border: "none",
@@ -300,7 +300,7 @@ export default function PracticePage() {
             boxShadow: "0 6px 12px rgba(0,0,0,0.25)"
           }}
         >
-          Skip
+          Back
         </button>
 
         {/* CENTER: MICROPHONE */}
@@ -323,13 +323,13 @@ export default function PracticePage() {
           🎤
         </button>
 
-        {/* RIGHT: BACK TO PREVIOUS WORD */}
+        {/* RIGHT: SKIP */}
         <button
-          onClick={() => setIndex((prev) => Math.max(prev - 1, 0))}
+          onClick={() => setIndex((prev) => prev + 1)}
           style={{
             padding: "12px 20px",
             borderRadius: 20,
-            background: "#6A5ACD",
+            background: "#FF6F91",
             color: "white",
             fontSize: 20,
             border: "none",
@@ -337,7 +337,7 @@ export default function PracticePage() {
             boxShadow: "0 6px 12px rgba(0,0,0,0.25)"
           }}
         >
-          Back
+          Skip
         </button>
       </div>
 
