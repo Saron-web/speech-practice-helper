@@ -31,7 +31,7 @@ export default function LoginPage() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        background: "linear-gradient(135deg, #b6e63c, #FFD700, #87CEFA)"
+        background: "linear-gradient(135deg, #FFD700, #FF8C00, #FF69B4, #87CEFA)"
       }}
     >
       <form
