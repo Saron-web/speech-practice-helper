@@ -95,10 +95,29 @@ export default function LoginPage() {
             fontSize: 20,
             border: "none",
             cursor: "pointer",
-            boxShadow: "0 6px 12px rgba(0,0,0,0.25)"
+            boxShadow: "0 6px 12px rgba(0,0,0,0.25)",
+            marginBottom: 10
           }}
         >
           Login
+        </button>
+
+        <button
+          type="button"
+          onClick={() => router.push("/register")}
+          style={{
+            width: "100%",
+            padding: 10,
+            borderRadius: 10,
+            background: "transparent",
+            color: "#222",
+            fontSize: 16,
+            border: "none",
+            cursor: "pointer",
+            textDecoration: "underline"
+          }}
+        >
+          Create an account
         </button>
       </form>
     </div>
