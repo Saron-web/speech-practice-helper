@@ -45,7 +45,6 @@ export default function PracticePage() {
   ];
 
   const words = [
-    // Animals
     { word: "Cat", emoji: "🐱", category: "Animals" },
     { word: "Dog", emoji: "🐶", category: "Animals" },
     { word: "Fish", emoji: "🐟", category: "Animals" },
@@ -56,7 +55,6 @@ export default function PracticePage() {
     { word: "Rabbit", emoji: "🐰", category: "Animals" },
     { word: "Frog", emoji: "🐸", category: "Animals" },
 
-    // Food
     { word: "Apple", emoji: "🍎", category: "Food" },
     { word: "Banana", emoji: "🍌", category: "Food" },
     { word: "Milk", emoji: "🥛", category: "Food" },
@@ -66,7 +64,6 @@ export default function PracticePage() {
     { word: "Cheese", emoji: "🧀", category: "Food" },
     { word: "Carrot", emoji: "🥕", category: "Food" },
 
-    // Nature
     { word: "Sun", emoji: "☀️", category: "Nature" },
     { word: "Tree", emoji: "🌳", category: "Nature" },
     { word: "Flower", emoji: "🌸", category: "Nature" },
@@ -76,7 +73,6 @@ export default function PracticePage() {
     { word: "Leaf", emoji: "🍃", category: "Nature" },
     { word: "Fire", emoji: "🔥", category: "Nature" },
 
-    // Family
     { word: "Mama", emoji: "👩", category: "Family" },
     { word: "Baba", emoji: "👨", category: "Family" },
     { word: "Baby", emoji: "👶", category: "Family" },
@@ -85,7 +81,6 @@ export default function PracticePage() {
     { word: "Grandma", emoji: "👵", category: "Family" },
     { word: "Grandpa", emoji: "👴", category: "Family" },
 
-    // Basic Words
     { word: "Yes", emoji: "👍", category: "Basic Words" },
     { word: "No", emoji: "🙅", category: "Basic Words" },
     { word: "Stop", emoji: "✋", category: "Basic Words" },
@@ -94,7 +89,6 @@ export default function PracticePage() {
     { word: "More", emoji: "➕", category: "Basic Words" },
     { word: "All Done", emoji: "✔️", category: "Basic Words" },
 
-    // Feelings
     { word: "Happy", emoji: "😀", category: "Feelings" },
     { word: "Sad", emoji: "😢", category: "Feelings" },
     { word: "Angry", emoji: "😡", category: "Feelings" },
@@ -102,7 +96,6 @@ export default function PracticePage() {
     { word: "Tired", emoji: "😴", category: "Feelings" },
     { word: "Love", emoji: "❤️", category: "Feelings" },
 
-    // Toys
     { word: "Ball", emoji: "⚽", category: "Toys" },
     { word: "Teddy", emoji: "🧸", category: "Toys" },
     { word: "Car", emoji: "🚗", category: "Toys" },
@@ -110,7 +103,6 @@ export default function PracticePage() {
     { word: "Doll", emoji: "🪆", category: "Toys" },
     { word: "Kite", emoji: "🪁", category: "Toys" },
 
-    // Actions
     { word: "Eat", emoji: "🍽️", category: "Actions" },
     { word: "Sleep", emoji: "🛏️", category: "Actions" },
     { word: "Run", emoji: "🏃", category: "Actions" },
@@ -119,7 +111,6 @@ export default function PracticePage() {
     { word: "Wave", emoji: "👋", category: "Actions" },
     { word: "Drink", emoji: "🥤", category: "Actions" },
 
-    // Daily Routine
     { word: "Bath", emoji: "🛁", category: "Daily Routine" },
     { word: "Brush Teeth", emoji: "🪥", category: "Daily Routine" },
     { word: "Bed", emoji: "🛏️", category: "Daily Routine" },
@@ -127,7 +118,6 @@ export default function PracticePage() {
     { word: "Coat", emoji: "🧥", category: "Daily Routine" },
     { word: "Wash Hands", emoji: "🧼", category: "Daily Routine" },
 
-    // Places
     { word: "Home", emoji: "🏠", category: "Places" },
     { word: "School", emoji: "🏫", category: "Places" },
     { word: "Park", emoji: "🌳", category: "Places" },
@@ -161,7 +151,6 @@ export default function PracticePage() {
     setListening(true);
     setHeard("");
 
-    // 🧸 Bear reacts to listening
     setBearExpression("🧸");
     sounds.start?.play();
 
@@ -183,7 +172,6 @@ export default function PracticePage() {
     const correct =
       spokenWord.toLowerCase() === currentWord.word.toLowerCase();
 
-    // 🧸 Bear reacts to correctness
     if (correct) {
       setBearExpression("😃🧸");
       sounds.correct?.play();
@@ -223,9 +211,7 @@ export default function PracticePage() {
           color: "white",
           textShadow: "3px 3px 6px rgba(0,0,0,0.25)"
         }}
-      >
-    
-      </h1>
+      ></h1>
 
       {/* Category Buttons */}
       <div
@@ -312,6 +298,24 @@ export default function PracticePage() {
       <div style={{ fontSize: 24, color: "white" }}>
         {listening ? "Listening..." : "Tap the button to speak!"}
       </div>
+
+      {/* ⭐ SKIP BUTTON ADDED HERE ⭐ */}
+      <button
+        onClick={() => setIndex((prev) => prev + 1)}
+        style={{
+          marginTop: 10,
+          padding: "12px 20px",
+          borderRadius: 20,
+          background: "#FF6F91",
+          color: "white",
+          fontSize: 20,
+          border: "none",
+          cursor: "pointer",
+          boxShadow: "0 6px 12px rgba(0,0,0,0.25)"
+        }}
+      >
+        Skip — Too Hard
+      </button>
 
       {heard && (
         <div
