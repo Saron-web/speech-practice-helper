@@ -1,11 +1,11 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect } from "react";
-import { 
-  getAuth, 
-  onAuthStateChanged, 
-  signInWithEmailAndPassword, 
-  signOut 
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut
 } from "firebase/auth";
 import "../firebase/firebaseConfig";
 
@@ -23,14 +23,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return () => unsubscribe();
   }, []);
 
-  // REAL Firebase login
-  const login = async (email: string, password: string) => {
-    await signInWithEmailAndPassword(auth, email, password);
+  // REAL Firebase login — MUST return the promise
+  const login = (email: string, password: string) => {
+    return signInWithEmailAndPassword(auth, email, password);
   };
 
   // REAL Firebase logout
-  const logout = async () => {
-    await signOut(auth);
+  const logout = () => {
+    return signOut(auth);
   };
 
   return (
