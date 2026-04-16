@@ -1,124 +1,111 @@
 "use client";
 
-import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../context/AuthContext"; // adjust path if needed
 
-export default function LoginPage() {
+export default function DashboardPage() {
+  const { user, logout } = useAuth();
   const router = useRouter();
-  const { login } = useAuth(); // use AuthContext login
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError("");
-
-    try {
-      await login(email, password); // REAL Firebase login through AuthContext
-      router.push("/dashboard");
-    } catch (err: any) {
-      setError(err.message);
-    }
+  const handleLogout = async () => {
+    await logout();
+    router.push("/login");
   };
 
   return (
     <div
       style={{
         minHeight: "100vh",
+        padding: 40,
         display: "flex",
-        justifyContent: "center",
+        flexDirection: "column",
         alignItems: "center",
+        gap: 40,
         background: "linear-gradient(135deg, #FFD700, #FF8C00, #FF69B4, #87CEFA)"
       }}
     >
-      <form
-        onSubmit={handleLogin}
+      <h1
         style={{
-          background: "rgba(255,255,255,0.4)",
-          padding: 40,
-          borderRadius: 20,
-          width: 350,
-          boxShadow: "0 8px 16px rgba(0,0,0,0.25)",
-          backdropFilter: "blur(6px)"
+          fontSize: 40,
+          color: "white",
+          textShadow: "3px 3px 6px rgba(0,0,0,0.25)"
         }}
       >
-        <h2 style={{ textAlign: "center", color: "#222", marginBottom: 20 }}>
-          Login
-        </h2>
+        Welcome, {user?.email}
+      </h1>
 
-        <label style={{ color: "#222", fontSize: 18 }}>Email</label>
-        <input
-          type="email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{
-            width: "100%",
-            padding: 12,
-            borderRadius: 10,
-            border: "none",
-            marginBottom: 15
-          }}
-        />
+      {/* Practice Button */}
+      <a
+        href="/practice"
+        style={{
+          width: 300,
+          padding: 20,
+          textAlign: "center",
+          background: "rgba(255,255,255,0.4)",
+          borderRadius: 20,
+          color: "white",
+          fontSize: 26,
+          textDecoration: "none",
+          boxShadow: "0 6px 12px rgba(0,0,0,0.25)"
+        }}
+      >
+        🎤 Start Practice
+      </a>
 
-        <label style={{ color: "#222", fontSize: 18 }}>Password</label>
-        <input
-          type="password"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={{
-            width: "100%",
-            padding: 12,
-            borderRadius: 10,
-            border: "none",
-            marginBottom: 20
-          }}
-        />
+      {/* History Button */}
+      <a
+        href="/history"
+        style={{
+          width: 300,
+          padding: 20,
+          textAlign: "center",
+          background: "rgba(255,255,255,0.4)",
+          borderRadius: 20,
+          color: "white",
+          fontSize: 26,
+          textDecoration: "none",
+          boxShadow: "0 6px 12px rgba(0,0,0,0.25)"
+        }}
+      >
+        📜 View History
+      </a>
 
-        {error && (
-          <p style={{ color: "red", marginBottom: 10, fontSize: 14 }}>{error}</p>
-        )}
+      {/* Protected Page */}
+      <a
+        href="/protected"
+        style={{
+          width: 300,
+          padding: 20,
+          textAlign: "center",
+          background: "rgba(255,255,255,0.4)",
+          borderRadius: 20,
+          color: "white",
+          fontSize: 26,
+          textDecoration: "none",
+          boxShadow: "0 6px 12px rgba(0,0,0,0.25)"
+        }}
+      >
+        🔒 Protected Page
+      </a>
 
-        <button
-          type="submit"
-          style={{
-            width: "100%",
-            padding: 14,
-            borderRadius: 10,
-            background: "#6A5ACD",
-            color: "white",
-            fontSize: 20,
-            border: "none",
-            cursor: "pointer",
-            boxShadow: "0 6px 12px rgba(0,0,0,0.25)",
-            marginBottom: 10
-          }}
-        >
-          Login
-        </button>
-
-        <button
-          type="button"
-          onClick={() => router.push("/register")}
-          style={{
-            width: "100%",
-            padding: 10,
-            borderRadius: 10,
-            background: "transparent",
-            color: "#222",
-            fontSize: 16,
-            border: "none",
-            cursor: "pointer",
-            textDecoration: "underline"
-          }}
-        >
-          Create an account
-        </button>
-      </form>
+      {/* Logout Button */}
+      <button
+        onClick={handleLogout}
+        style={{
+          marginTop: 20,
+          width: 300,
+          padding: 18,
+          borderRadius: 20,
+          background: "rgba(255,0,0,0.6)",
+          color: "white",
+          fontSize: 24,
+          border: "none",
+          cursor: "pointer",
+          boxShadow: "0 6px 12px rgba(0,0,0,0.25)"
+        }}
+      >
+        🚪 Logout
+      </button>
     </div>
   );
 }
