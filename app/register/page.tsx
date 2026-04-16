@@ -24,7 +24,7 @@ export default function RegisterPage() {
       const userCredential = await register(email, password);
       const user = userCredential.user;
 
-      // Save username + email to Firestore
+      // Save username to Firestore
       await setDoc(doc(db, "users", user.uid), {
         username,
         email
@@ -115,7 +115,6 @@ export default function RegisterPage() {
           </p>
         )}
 
-        {/* Register Button */}
         <button
           type="submit"
           style={{
@@ -134,11 +133,6 @@ export default function RegisterPage() {
           Register
         </button>
 
-        {/* Already Registered Message */}
-        <p style={{ textAlign: "center", color: "#222", marginBottom: 10 }}>
-          Already registered?
-        </p>
-
         <button
           type="button"
           onClick={() => router.push("/login")}
@@ -154,7 +148,7 @@ export default function RegisterPage() {
             textDecoration: "underline"
           }}
         >
-          Login here
+          Already have an account?
         </button>
       </form>
     </div>
