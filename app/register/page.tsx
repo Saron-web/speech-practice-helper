@@ -1,14 +1,16 @@
 "use client";
 
-import "../firebase/firebaseConfig";
 import { useState } from "react";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../context/AuthContext";
+import { db } from "../firebase/firebaseConfig";
+import { doc, setDoc } from "firebase/firestore";
 
 export default function RegisterPage() {
   const router = useRouter();
-  const auth = getAuth();
+  const { register } = useAuth();
 
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -18,7 +20,16 @@ export default function RegisterPage() {
     setError("");
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      // Create user
+      const userCredential = await register(email, password);
+      const user = userCredential.user;
+
+      // Save username + email to Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        username,
+        email
+      });
+
       router.push("/login");
     } catch (err: any) {
       setError(err.message);
@@ -50,6 +61,23 @@ export default function RegisterPage() {
           Create Account
         </h2>
 
+        {/* Username */}
+        <label style={{ color: "#222", fontSize: 18 }}>Username</label>
+        <input
+          type="text"
+          required
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          style={{
+            width: "100%",
+            padding: 12,
+            borderRadius: 10,
+            border: "none",
+            marginBottom: 15
+          }}
+        />
+
+        {/* Email */}
         <label style={{ color: "#222", fontSize: 18 }}>Email</label>
         <input
           type="email"
@@ -65,6 +93,7 @@ export default function RegisterPage() {
           }}
         />
 
+        {/* Password */}
         <label style={{ color: "#222", fontSize: 18 }}>Password</label>
         <input
           type="password"
@@ -81,9 +110,12 @@ export default function RegisterPage() {
         />
 
         {error && (
-          <p style={{ color: "red", marginBottom: 10, fontSize: 14 }}>{error}</p>
+          <p style={{ color: "red", marginBottom: 10, fontSize: 14 }}>
+            {error}
+          </p>
         )}
 
+        {/* Register Button */}
         <button
           type="submit"
           style={{
@@ -95,10 +127,34 @@ export default function RegisterPage() {
             fontSize: 20,
             border: "none",
             cursor: "pointer",
-            boxShadow: "0 6px 12px rgba(0,0,0,0.25)"
+            boxShadow: "0 6px 12px rgba(0,0,0,0.25)",
+            marginBottom: 10
           }}
         >
           Register
+        </button>
+
+        {/* Already Registered Message */}
+        <p style={{ textAlign: "center", color: "#222", marginBottom: 10 }}>
+          Already registered?
+        </p>
+
+        <button
+          type="button"
+          onClick={() => router.push("/login")}
+          style={{
+            width: "100%",
+            padding: 10,
+            borderRadius: 10,
+            background: "transparent",
+            color: "#222",
+            fontSize: 16,
+            border: "none",
+            cursor: "pointer",
+            textDecoration: "underline"
+          }}
+        >
+          Login here
         </button>
       </form>
     </div>
