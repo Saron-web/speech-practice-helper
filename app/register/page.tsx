@@ -3,14 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
-import { db } from "../firebase/firebaseConfig";
-import { doc, setDoc } from "firebase/firestore";
 
 export default function RegisterPage() {
   const router = useRouter();
   const { register } = useAuth();
 
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -20,16 +17,7 @@ export default function RegisterPage() {
     setError("");
 
     try {
-      // Create user
-      const userCredential = await register(email, password);
-      const user = userCredential.user;
-
-      // Save username to Firestore
-      await setDoc(doc(db, "users", user.uid), {
-        username,
-        email
-      });
-
+      await register(email, password);
       router.push("/login");
     } catch (err: any) {
       setError(err.message);
@@ -60,22 +48,6 @@ export default function RegisterPage() {
         <h2 style={{ textAlign: "center", color: "#222", marginBottom: 20 }}>
           Create Account
         </h2>
-
-        {/* Username */}
-        <label style={{ color: "#222", fontSize: 18 }}>Username</label>
-        <input
-          type="text"
-          required
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          style={{
-            width: "100%",
-            padding: 12,
-            borderRadius: 10,
-            border: "none",
-            marginBottom: 15
-          }}
-        />
 
         {/* Email */}
         <label style={{ color: "#222", fontSize: 18 }}>Email</label>
@@ -115,6 +87,7 @@ export default function RegisterPage() {
           </p>
         )}
 
+        {/* Register Button */}
         <button
           type="submit"
           style={{
@@ -133,6 +106,11 @@ export default function RegisterPage() {
           Register
         </button>
 
+        {/* Already Registered Message */}
+        <p style={{ textAlign: "center", color: "#222", marginBottom: 10 }}>
+          Already registered?
+        </p>
+
         <button
           type="button"
           onClick={() => router.push("/login")}
@@ -148,7 +126,7 @@ export default function RegisterPage() {
             textDecoration: "underline"
           }}
         >
-          Already have an account?
+          Login here
         </button>
       </form>
     </div>
