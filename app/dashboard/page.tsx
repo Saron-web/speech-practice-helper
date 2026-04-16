@@ -1,103 +1,124 @@
 "use client";
 
-import { useAuth } from "../context/AuthContext";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../context/AuthContext"; // adjust path if needed
 
-export default function Dashboard() {
-  const { user, logout } = useAuth();
+export default function LoginPage() {
+  const router = useRouter();
+  const { login } = useAuth(); // use AuthContext login
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      await login(email, password); // REAL Firebase login through AuthContext
+      router.push("/dashboard");
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
 
   return (
     <div
       style={{
         minHeight: "100vh",
-        padding: 40,
         display: "flex",
-        flexDirection: "column",
+        justifyContent: "center",
         alignItems: "center",
-        gap: 50,
-        background: "linear-gradient(135deg, #FFB6C1, #FFD700, #87CEFA)"
+        background: "linear-gradient(135deg, #FFD700, #FF8C00, #FF69B4, #87CEFA)"
       }}
     >
-      <h1
+      <form
+        onSubmit={handleLogin}
         style={{
-          fontSize: 42,
-          color: "white",
-          textShadow: "3px 3px 6px rgba(0,0,0,0.25)"
+          background: "rgba(255,255,255,0.4)",
+          padding: 40,
+          borderRadius: 20,
+          width: 350,
+          boxShadow: "0 8px 16px rgba(0,0,0,0.25)",
+          backdropFilter: "blur(6px)"
         }}
       >
-        Welcome, {user?.email || "Guest"}
-      </h1>
+        <h2 style={{ textAlign: "center", color: "#222", marginBottom: 20 }}>
+          Login
+        </h2>
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 30,
-          width: "100%",
-          maxWidth: 400
-        }}
-      >
-        <a
-          href="/practice"
+        <label style={{ color: "#222", fontSize: 18 }}>Email</label>
+        <input
+          type="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           style={{
-            background: "rgba(255,255,255,0.35)",
-            padding: 25,
-            borderRadius: 35,
-            textAlign: "center",
-            fontSize: 28,
-            color: "white",
-            fontWeight: "bold",
-            textDecoration: "none",
-            boxShadow: "0 8px 16px rgba(0,0,0,0.25)",
-            backdropFilter: "blur(6px)",
-            transition: "transform 0.15s"
+            width: "100%",
+            padding: 12,
+            borderRadius: 10,
+            border: "none",
+            marginBottom: 15
           }}
-          onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.95)")}
-          onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
-        >
-          🎤 Start Practice
-        </a>
+        />
 
-        <a
-          href="/history"
+        <label style={{ color: "#222", fontSize: 18 }}>Password</label>
+        <input
+          type="password"
+          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           style={{
-            background: "rgba(255,255,255,0.35)",
-            padding: 25,
-            borderRadius: 35,
-            textAlign: "center",
-            fontSize: 28,
-            color: "white",
-            fontWeight: "bold",
-            textDecoration: "none",
-            boxShadow: "0 8px 16px rgba(0,0,0,0.25)",
-            backdropFilter: "blur(6px)",
-            transition: "transform 0.15s"
+            width: "100%",
+            padding: 12,
+            borderRadius: 10,
+            border: "none",
+            marginBottom: 20
           }}
-          onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.95)")}
-          onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
-        >
-          ⭐ View History
-        </a>
-      </div>
+        />
 
-      <button
-        onClick={logout}
-        style={{
-          marginTop: 20,
-          padding: "15px 40px",
-          fontSize: 22,
-          background: "#6A5ACD",
-          color: "white",
-          borderRadius: 30,
-          border: "none",
-          cursor: "pointer",
-          boxShadow: "0 6px 12px rgba(0,0,0,0.25)",
-          transition: "transform 0.15s"
-        }}
-        onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.95)")}
-        onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
-      >
-        Logout
-      </button>
+        {error && (
+          <p style={{ color: "red", marginBottom: 10, fontSize: 14 }}>{error}</p>
+        )}
+
+        <button
+          type="submit"
+          style={{
+            width: "100%",
+            padding: 14,
+            borderRadius: 10,
+            background: "#6A5ACD",
+            color: "white",
+            fontSize: 20,
+            border: "none",
+            cursor: "pointer",
+            boxShadow: "0 6px 12px rgba(0,0,0,0.25)",
+            marginBottom: 10
+          }}
+        >
+          Login
+        </button>
+
+        <button
+          type="button"
+          onClick={() => router.push("/register")}
+          style={{
+            width: "100%",
+            padding: 10,
+            borderRadius: 10,
+            background: "transparent",
+            color: "#222",
+            fontSize: 16,
+            border: "none",
+            cursor: "pointer",
+            textDecoration: "underline"
+          }}
+        >
+          Create an account
+        </button>
+      </form>
     </div>
   );
 }

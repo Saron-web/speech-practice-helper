@@ -9,7 +9,6 @@ export default function RegisterPage() {
   const router = useRouter();
   const auth = getAuth();
 
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -50,21 +49,6 @@ export default function RegisterPage() {
         <h2 style={{ textAlign: "center", color: "#222", marginBottom: 20 }}>
           Create Account
         </h2>
-
-        <label style={{ color: "#222", fontSize: 18 }}>Username</label>
-        <input
-          type="text"
-          required
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          style={{
-            width: "100%",
-            padding: 12,
-            borderRadius: 10,
-            border: "none",
-            marginBottom: 15
-          }}
-        />
 
         <label style={{ color: "#222", fontSize: 18 }}>Email</label>
         <input
