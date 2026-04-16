@@ -20,11 +20,9 @@ export default function RegisterPage() {
     setError("");
 
     try {
-      // Create user
       const userCredential = await register(email, password);
       const user = userCredential.user;
 
-      // Save username + email to Firestore
       await setDoc(doc(db, "users", user.uid), {
         username,
         email
@@ -32,7 +30,11 @@ export default function RegisterPage() {
 
       router.push("/login");
     } catch (err: any) {
-      setError(err.message);
+      if (err.code === "auth/email-already-in-use") {
+        setError("This email is already registered. Please log in instead.");
+      } else {
+        setError("Registration failed. Please try again.");
+      }
     }
   };
 
@@ -61,7 +63,6 @@ export default function RegisterPage() {
           Create Account
         </h2>
 
-        {/* Username */}
         <label style={{ color: "#222", fontSize: 18 }}>Username</label>
         <input
           type="text"
@@ -77,7 +78,6 @@ export default function RegisterPage() {
           }}
         />
 
-        {/* Email */}
         <label style={{ color: "#222", fontSize: 18 }}>Email</label>
         <input
           type="email"
@@ -93,7 +93,6 @@ export default function RegisterPage() {
           }}
         />
 
-        {/* Password */}
         <label style={{ color: "#222", fontSize: 18 }}>Password</label>
         <input
           type="password"
@@ -115,7 +114,6 @@ export default function RegisterPage() {
           </p>
         )}
 
-        {/* Register Button */}
         <button
           type="submit"
           style={{
@@ -134,7 +132,6 @@ export default function RegisterPage() {
           Register
         </button>
 
-        {/* Already Registered Message */}
         <p style={{ textAlign: "center", color: "#222", marginBottom: 10 }}>
           Already registered?
         </p>
