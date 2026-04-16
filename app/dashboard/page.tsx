@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 
 export default function DashboardPage() {
-  const { user, userData, logout } = useAuth();
+  const { user, logout } = useAuth();
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -12,7 +12,7 @@ export default function DashboardPage() {
     router.push("/login");
   };
 
-  const username = userData?.username || user?.email?.split("@")[0];
+  const username = user?.email?.split("@")[0];
 
   return (
     <div
