@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 
 export default function DashboardPage() {
-  const { user, logout } = useAuth();
+  const { user, userData, logout } = useAuth();
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -12,8 +12,7 @@ export default function DashboardPage() {
     router.push("/login");
   };
 
-  // Extract username from email (before the @)
-  const username = user?.email?.split("@")[0];
+  const username = userData?.username || user?.email?.split("@")[0];
 
   return (
     <div
@@ -37,7 +36,6 @@ export default function DashboardPage() {
         Welcome, {username}
       </h1>
 
-      {/* Practice Button */}
       <a
         href="/practice"
         style={{
@@ -55,7 +53,6 @@ export default function DashboardPage() {
         🎤 Start Practice
       </a>
 
-      {/* History Button */}
       <a
         href="/history"
         style={{
@@ -73,7 +70,6 @@ export default function DashboardPage() {
         📜 View History
       </a>
 
-      {/* Progress Summary Button */}
       <a
         href="/progress"
         style={{
@@ -91,7 +87,6 @@ export default function DashboardPage() {
         📈 Progress Summary
       </a>
 
-      {/* Logout Button */}
       <button
         onClick={handleLogout}
         style={{
