@@ -12,6 +12,9 @@ export default function DashboardPage() {
     router.push("/login");
   };
 
+  // Extract username from email (before the @)
+  const username = user?.email?.split("@")[0];
+
   return (
     <div
       style={{
@@ -31,7 +34,7 @@ export default function DashboardPage() {
           textShadow: "3px 3px 6px rgba(0,0,0,0.25)"
         }}
       >
-        Welcome, {user?.email}
+        Welcome, {username}
       </h1>
 
       {/* Practice Button */}
@@ -70,9 +73,9 @@ export default function DashboardPage() {
         📜 View History
       </a>
 
-      {/* Protected Page */}
+      {/* Progress Summary Button */}
       <a
-        href="/protected"
+        href="/progress"
         style={{
           width: 300,
           padding: 20,
@@ -85,7 +88,7 @@ export default function DashboardPage() {
           boxShadow: "0 6px 12px rgba(0,0,0,0.25)"
         }}
       >
-        🔒 Protected Page
+        📈 Progress Summary
       </a>
 
       {/* Logout Button */}
